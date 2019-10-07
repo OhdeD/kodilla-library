@@ -14,6 +14,6 @@ public class TitleDto {
     private Long titleId;
     private String title;
     private String author;
-    private Date published;
+    private int published;
     private List<Specimen> specimenList;
 }

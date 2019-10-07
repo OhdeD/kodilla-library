@@ -21,11 +21,10 @@ public class Mapper {
         return new TitleDto(title.getTitleId(), title.getTitle(),title.getAuthor(), title.getPublished(),title.getSpecimenList());
     }
 
-    public Specimen mapToSpecimens (SpecimenDto specimenDto){
-        return new Specimen(specimenDto.getSpecimenId(), specimenDto.getTitleId(), specimenDto.getStatus(), specimenDto.getTitle());
-    }
-    public SpecimenDto mapToSpecimensDto (Specimen specimen){
-        return new SpecimenDto(specimen.getSpecimenId(), specimen.getTitleId(), specimen.getStatus(), specimen.getTitle());
-    }
-
+//    public Specimen mapToSpecimens (SpecimenDto specimenDto){
+//        return new Specimen(specimenDto.getSpecimenId(), specimenDto.getTitleId(), specimenDto.getStatus(), specimenDto.getTitle());
+//    }
+//    public SpecimenDto mapToSpecimensDto (Specimen specimen){
+//        return new SpecimenDto(specimen.getSpecimenId(), specimen.getTitleId(), specimen.getStatus(), specimen.getTitle());
+//    }
 }

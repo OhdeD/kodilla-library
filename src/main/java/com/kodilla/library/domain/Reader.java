@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -16,6 +17,7 @@ public class Reader {
     @Id
     @GeneratedValue
     @Column(name = "reader_id")
+    @NotNull
     private Long readerId;
 
     @Column(name = "name")

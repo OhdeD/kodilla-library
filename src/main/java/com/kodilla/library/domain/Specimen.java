@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "SPECIMENS")
@@ -15,10 +16,12 @@ public class Specimen {
     @Column(name = "specimen_id")
     @Id
     @GeneratedValue
+    @NotNull
     private Long specimenId;
 
-    @Column(name = "title_id")
-    private String titleId;
+//    @Column(name = "title_id")
+//    @NotNull
+//    private Long titleId;
 
     @Column(name = "status")
     private String status;
@@ -26,4 +29,9 @@ public class Specimen {
     @ManyToOne
     @JoinColumn(name = "title_id")
     private Title title;
+
+    public Specimen(String status, Title title) {
+        this.status = status;
+        this.title = title;
+    }
 }

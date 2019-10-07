@@ -5,19 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table (name = "TITLES")
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class Title {
     @Id
     @GeneratedValue
     @Column(name = "title_id")
+    @NotNull
     private Long titleId;
 
     @Column(name = "title")
@@ -27,8 +28,14 @@ public class Title {
     private String author;
 
     @Column(name = "year_of_publishing")
-    private Date published;
+    private int published;
 
     @OneToMany(targetEntity = Specimen.class, mappedBy = "title", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Specimen> specimenList = new ArrayList<>();
+
+    public Title(String title, String author, int published) {
+        this.title = title;
+        this.author = author;
+        this.published = published;
+    }
 }
