@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,14 +24,13 @@ public class KodillaLibraryTestSuite {
     DbService dbService;
 
     @Test
-    public void testAddNewReader(){
+    public void testAddNewReader() {
         //Given
-        Reader reader = new Reader("Name", "Surname", new Date(2018,04,3));
+        Reader reader = new Reader("Name", "Surname", LocalDate.of(2018, 10, 6));
 
         //When
-        dbService.addReader(reader);
+        long id = dbService.addReader(reader).getReaderId();
         //Then
-        long id = reader.getReaderId();
         Assert.assertNotEquals(0, id);
 
         //CleanUp
@@ -40,69 +39,94 @@ public class KodillaLibraryTestSuite {
     }
 
     @Test
-    public void testAddingTitle(){
+    public void testAddingTitle() {
         //Given
         Title title1 = new Title("tytul1", "autor1", 2005);
 
         //When
-        dbService.addTitle(title1);
+        long id = dbService.addTitle(title1).getTitleId();
 
         //Then
-        long id = title1.getTitleId();
-        Assert.assertNotEquals(0,id);
+        Assert.assertNotEquals(0, id);
 
         //CleanUp
         dbService.deleteTitleById(id);
     }
 
     @Test
-    public void testAddingSpecimen(){
+    public void testAddingSpecimen() {
         //Given
         Title title2 = new Title("tytul1", "autor1", 2005);
-        Specimen specimen2 = new Specimen( "new",title2);
+        Specimen specimen2 = new Specimen("new", title2);
 
         //When
-        dbService.addTitle(title2);
-        dbService.addSpecimen(specimen2);
+        long id = dbService.addTitle(title2).getTitleId();
+        long idSpecimen = dbService.addSpecimen(specimen2).getSpecimenId();
 
         //Then
-        long id = title2.getTitleId();
-        long idSpecimen = specimen2.getSpecimenId();
         long titleIdFromSpecimen = specimen2.getTitle().getTitleId();
 
-        Assert.assertNotEquals(0,idSpecimen);
-        Assert.assertEquals(titleIdFromSpecimen,id);
+        Assert.assertNotEquals(0, idSpecimen);
+        Assert.assertEquals(titleIdFromSpecimen, id);
 
         //CleanUp
         dbService.deleteTitleById(id);
-        dbService.deleteAllSpecimenById(idSpecimen);
+        dbService.deleteSpecimenById(idSpecimen);
     }
 
     @Test
-    public void testOfBorrowings(){
+    public void testOfBorrowings() {
         //Given
-        Reader reader = new Reader("Adam", "Nowak", new Date());
+        Reader reader = new Reader("Adam", "Nowak", LocalDate.of(2018, 5, 15));
         Title title = new Title("Tytuł", "Autor", 03);
         Specimen specimen = new Specimen("new", title);
         Specimen specimen2 = new Specimen("old", title);
-        Borrowings borrowings = new Borrowings(new Date(),null, specimen2,reader);
+        Borrowings borrowings = new Borrowings(LocalDate.of(2019, 10, 1), null, specimen2, reader);
 
         //When
-        dbService.addReader(reader);
-        dbService.addTitle(title);
-        dbService.addSpecimen(specimen);
-        dbService.addSpecimen(specimen2);
+        long idOfReader = dbService.addReader(reader).getReaderId();
+        long idOfTitle = dbService.addTitle(title).getTitleId();
+        long idOfSpecimen = dbService.addSpecimen(specimen2).getSpecimenId();
         dbService.saveBorrowing(borrowings);
-        long idOfSpecimen = specimen2.getSpecimenId();
-        long idOfReader = borrowings.getReader().getReaderId();
 
-        borrowings.setReturned(new Date());
+        borrowings.setReturned(LocalDate.now());
         dbService.saveBorrowing(borrowings);
         //Then
-        Assert.assertNotEquals(0,idOfReader);
-        Assert.assertNotEquals(0,idOfSpecimen);
+        Assert.assertNotEquals(0, idOfReader);
+        Assert.assertNotEquals(0, idOfSpecimen);
 
         //CleanUp
+        dbService.deleteReaderById(idOfReader);
+        dbService.deleteTitleById(idOfTitle);
+        dbService.deleteSpecimenById(idOfSpecimen);
+    }
+    @Test
+    public void testOfShowingCopies() {
+        //Given
+        Reader reader = new Reader("Adam", "Nowak", LocalDate.of(2018, 5, 15));
+        Title title = new Title("Tytuł", "Autor", 03);
+        Specimen specimen = new Specimen("new", title);
+        Specimen specimen2 = new Specimen("old", title);
+        Borrowings borrowings = new Borrowings(LocalDate.of(2019, 10, 1), null, specimen2, reader);
+
+        //When
+        long idOfReader = dbService.addReader(reader).getReaderId();
+        long idOfTitle = dbService.addTitle(title).getTitleId();
+        long idOfAdditionaSpecimen = dbService.addSpecimen(specimen).getSpecimenId();
+        long idOfSpecimen = dbService.addSpecimen(specimen2).getSpecimenId();
+        dbService.saveBorrowing(borrowings);
+
+        dbService.saveBorrowing(borrowings);
+        System.out.println("wszystkie egzemplarze: " + dbService.showAllSpecimensIdOfOneTitle(idOfTitle));
+        System.out.println("dostępne egzemplarze: " + dbService.showAllAvailableSpecimensIdOfOneTitle(idOfTitle));
+
+        //Then
+        Assert.assertNotEquals(0, idOfReader);
+        Assert.assertNotEquals(0, idOfSpecimen);
+
+        //CleanUp
+        dbService.deleteTitleById(idOfTitle);
+        dbService.deleteReaderById(idOfReader);
 
     }
 }

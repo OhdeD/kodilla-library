@@ -8,7 +8,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "BORROWINGS")
@@ -23,10 +24,10 @@ public class Borrowings implements Serializable {
 
     @Column(name = "borrowed")
     @NotNull
-    private Date borrowingDate;
+    private LocalDate borrowingDate;
 
     @Column(name = "returned")
-    private Date returned;
+    private LocalDate returned;
 
 
     @ManyToOne
@@ -37,7 +38,7 @@ public class Borrowings implements Serializable {
     @JoinColumn(name = "reader_id")
     private Reader reader;
 
-    public Borrowings(Date borrowingDate, Date returned, Specimen specimen, Reader reader) {
+    public Borrowings(LocalDate borrowingDate, LocalDate returned, Specimen specimen, Reader reader) {
         this.borrowingDate = borrowingDate;
         this.returned = returned;
         this.specimen = specimen;

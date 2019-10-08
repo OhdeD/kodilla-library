@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -28,12 +29,12 @@ public class Reader {
     private String surname;
 
     @Column(name = "join_date")
-    private Date joinDate;
+    private LocalDate joinDate;
 
     @ManyToMany(targetEntity = Borrowings.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "reader")
     private List<Borrowings>borrowings;
 
-    public Reader(String name, String surname, Date joinDate) {
+    public Reader(String name, String surname, LocalDate joinDate) {
         this.name = name;
         this.surname = surname;
         this.joinDate=joinDate;

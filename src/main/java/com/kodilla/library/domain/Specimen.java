@@ -34,4 +34,11 @@ public class Specimen {
         this.status = status;
         this.title = title;
     }
+
+    @Override
+    public String toString() {
+        return "Specimen{" +
+                "specimenId=" + specimenId +
+                '}';
+    }
 }

@@ -2,15 +2,31 @@ package com.kodilla.library.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import java.util.Date;
-@AllArgsConstructor
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.time.LocalDate;
+
+
+
 @Getter
-public class BorrowingsDto {
-    private int lp;
-    private Date borrowingDate;
-    private Date returned;
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class BorrowingsDto  {
+    private long lp;
+    private LocalDate borrowingDate;
+    private LocalDate returned;
     private Specimen specimen;
     private Reader reader;
 
-
+    public BorrowingsDto(LocalDate borrowingDate, LocalDate returned, Specimen specimen, Reader reader) {
+        this.borrowingDate = borrowingDate;
+        this.returned = returned;
+        this.specimen = specimen;
+        this.reader = reader;
+    }
 }
