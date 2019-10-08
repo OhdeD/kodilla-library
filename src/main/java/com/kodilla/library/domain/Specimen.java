@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "SPECIMENS")
@@ -19,16 +20,15 @@ public class Specimen {
     @NotNull
     private Long specimenId;
 
-//    @Column(name = "title_id")
-//    @NotNull
-//    private Long titleId;
-
     @Column(name = "status")
     private String status;
 
     @ManyToOne
     @JoinColumn(name = "title_id")
     private Title title;
+
+    @OneToMany(targetEntity = Borrowings.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "specimen")
+    private List<Borrowings> borrowings;
 
     public Specimen(String status, Title title) {
         this.status = status;

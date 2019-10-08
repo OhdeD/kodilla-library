@@ -8,4 +8,7 @@ public interface SpecimenRepository extends CrudRepository<Specimen, Long> {
     @Override
     Specimen save(Specimen specimen);
 
+
+    void deleteAllBySpecimenId(Long id);
+
 }

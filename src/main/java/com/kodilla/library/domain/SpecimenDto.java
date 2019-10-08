@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class SpecimenDto {
     private Long specimenId;
-    private String titleId;
     private String status;
     private Title title;
+    private List<Borrowings>borrowings;
 }
