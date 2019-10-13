@@ -12,8 +12,10 @@ import com.kodilla.library.repository.ReadersRepository;
 import com.kodilla.library.repository.SpecimenRepository;
 import com.kodilla.library.repository.TitlesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +63,7 @@ public class DbService {
         return borrowingRepository.save(borrowings);
     }
 
-    public List<Long> showAllSpecimensIdOfOneTitle(Long titleId) {
+    public List<Long> getAllSpecimensIdOfOneTitle(Long titleId) {
         List<Specimen> listOfSpecimens = specimenRepository.findAllSpecimenIdByTitle_TitleId(titleId);
         List<Long> idsOfCopies = new ArrayList<>();
         for (Specimen s : listOfSpecimens) {
@@ -70,9 +72,8 @@ public class DbService {
         return idsOfCopies;
     }
 
-
-    public List<Long> showAllAvailableSpecimensIdOfOneTitle (Long titleId) {
-        List<Long> specimensId = showAllSpecimensIdOfOneTitle(titleId);
+    public List<Long> getAllAvailableSpecimensIdOfOneTitle(Long titleId) {
+        List<Long> specimensId = getAllSpecimensIdOfOneTitle(titleId);
         List<Borrowings> listOfBorrowed = borrowingRepository.findAllByReturnedNull();
         List<Long> toRemove = new ArrayList<>();
         for (Long availableId : specimensId) {
@@ -85,5 +86,19 @@ public class DbService {
         specimensId.removeAll(toRemove);
         return specimensId;
     }
+
+    public List<Specimen> getAvailableSpecimensOfOneTitle(Long titleId){
+        List<Long> ids = getAllAvailableSpecimensIdOfOneTitle(titleId);
+        List<Specimen>  availableSpecimens = new ArrayList<>();
+        for (Long a:ids) {
+            availableSpecimens.add(specimenRepository.findById(a).get());
+        }
+        return availableSpecimens;
+    }
+
+    public Borrowings returnTitle(Long readerId, Long specimenId){
+        return borrowingRepository.returnTitleBySpecimenIdAndReaderId(readerId,specimenId);
+    }
+
 
 }

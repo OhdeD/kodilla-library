@@ -1,5 +1,6 @@
 package com.kodilla.library.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,11 +33,11 @@ public class Reader {
     private LocalDate joinDate;
 
     @ManyToMany(targetEntity = Borrowings.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "reader")
-    private List<Borrowings>borrowings;
+    private List<Borrowings> borrowings;
 
     public Reader(String name, String surname, LocalDate joinDate) {
         this.name = name;
         this.surname = surname;
-        this.joinDate=joinDate;
+        this.joinDate = joinDate;
     }
 }

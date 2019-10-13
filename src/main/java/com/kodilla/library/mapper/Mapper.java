@@ -3,11 +3,15 @@ package com.kodilla.library.mapper;
 import com.kodilla.library.domain.*;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class Mapper {
 
-    public Reader mapToReader(ReaderDto readerDto) {
-        return new Reader(readerDto.getReaderId(), readerDto.getName(), readerDto.getSurname(), readerDto.getJoinDate(), readerDto.getBorrowings());
+    public Reader mapToReaderBasic(ReaderDto readerDto) {
+        return new Reader(readerDto.getName(), readerDto.getSurname(), readerDto.getJoinDate());
     }
 
     public ReaderDto mapToReaderDto(Reader reader) {
@@ -36,5 +40,13 @@ public class Mapper {
 
     public BorrowingsDto mapToBorrowingsDto(Borrowings borrowings) {
         return new BorrowingsDto(borrowings.getBorrowingDate(), borrowings.getReturned(), borrowings.getSpecimen(), borrowings.getReader());
+    }
+
+    public List<SpecimenDto> mapToSpecimensDtoList(List<Specimen> list) {
+        return list.stream()
+                .map(a-> new SpecimenDto(a.getSpecimenId(),a.getStatus(),
+                        new Title(a.getTitle().getTitleId(),a.getTitle().getTitle(),a.getTitle().getAuthor(), a.getTitle().getPublished(), new ArrayList<>()),
+                        a.getBorrowings()))
+                .collect(Collectors.toList());
     }
 }

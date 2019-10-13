@@ -11,6 +11,14 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 
+
+@NamedNativeQuery(
+        name = "Borrowings.returnTitleBySpecimenIdAndReaderId",
+        query =" UPDATE BORROWINGS" +
+               " SET returned = now() " +
+               " WHERE (returned is null and reader_id = :READERID and specimen_id = :SPECIMENID);",
+        resultClass = Borrowings.class
+)
 @Entity
 @Table(name = "BORROWINGS")
 @Getter

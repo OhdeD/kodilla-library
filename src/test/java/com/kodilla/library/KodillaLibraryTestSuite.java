@@ -71,37 +71,11 @@ public class KodillaLibraryTestSuite {
 
         //CleanUp
         dbService.deleteTitleById(id);
-        dbService.deleteSpecimenById(idSpecimen);
     }
 
+
     @Test
-    public void testOfBorrowings() {
-        //Given
-        Reader reader = new Reader("Adam", "Nowak", LocalDate.of(2018, 5, 15));
-        Title title = new Title("Tytuł", "Autor", 03);
-        Specimen specimen = new Specimen("new", title);
-        Specimen specimen2 = new Specimen("old", title);
-        Borrowings borrowings = new Borrowings(LocalDate.of(2019, 10, 1), null, specimen2, reader);
-
-        //When
-        long idOfReader = dbService.addReader(reader).getReaderId();
-        long idOfTitle = dbService.addTitle(title).getTitleId();
-        long idOfSpecimen = dbService.addSpecimen(specimen2).getSpecimenId();
-        dbService.saveBorrowing(borrowings);
-
-        borrowings.setReturned(LocalDate.now());
-        dbService.saveBorrowing(borrowings);
-        //Then
-        Assert.assertNotEquals(0, idOfReader);
-        Assert.assertNotEquals(0, idOfSpecimen);
-
-        //CleanUp
-        dbService.deleteReaderById(idOfReader);
-        dbService.deleteTitleById(idOfTitle);
-        dbService.deleteSpecimenById(idOfSpecimen);
-    }
-    @Test
-    public void testOfShowingCopies() {
+    public void testOfGettingCopies() {
         //Given
         Reader reader = new Reader("Adam", "Nowak", LocalDate.of(2018, 5, 15));
         Title title = new Title("Tytuł", "Autor", 03);
@@ -117,9 +91,9 @@ public class KodillaLibraryTestSuite {
         dbService.saveBorrowing(borrowings);
 
         dbService.saveBorrowing(borrowings);
-        System.out.println("wszystkie egzemplarze: " + dbService.showAllSpecimensIdOfOneTitle(idOfTitle));
-        System.out.println("dostępne egzemplarze: " + dbService.showAllAvailableSpecimensIdOfOneTitle(idOfTitle));
-
+        System.out.println("wszystkie egzemplarze po id: " + dbService.getAllSpecimensIdOfOneTitle(idOfTitle));
+        System.out.println("dostępne egzemplarze po id: " + dbService.getAllAvailableSpecimensIdOfOneTitle(idOfTitle));
+        System.out.println("dostępne egzemplarze po obiektach egzemplarzy: " + dbService.getAvailableSpecimensOfOneTitle(idOfTitle));
         //Then
         Assert.assertNotEquals(0, idOfReader);
         Assert.assertNotEquals(0, idOfSpecimen);
@@ -127,6 +101,54 @@ public class KodillaLibraryTestSuite {
         //CleanUp
         dbService.deleteTitleById(idOfTitle);
         dbService.deleteReaderById(idOfReader);
-
     }
+
+    @Test
+    public void testOfBorrowingTitle() {
+        //Given
+        Reader reader = new Reader("Adam", "Nowak", LocalDate.of(2018, 5, 15));
+        Title title = new Title("Tytuł", "Autor", 03);
+        Specimen specimen2 = new Specimen("old", title);
+        Borrowings borrowings = new Borrowings(LocalDate.of(2019, 10, 1), null, specimen2, reader);
+
+        //When
+        dbService.addReader(reader);
+        dbService.addTitle(title);
+        dbService.addSpecimen(specimen2);
+        Borrowings borrowingsSaved = dbService.saveBorrowing(borrowings);
+        LocalDate borrowDate = borrowingsSaved.getBorrowingDate();
+        //Then
+        Assert.assertEquals(borrowings.getBorrowingDate(), borrowDate);
+        //CleanUp
+        dbService.deleteReaderById(reader.getReaderId());
+    }
+
+    @Test
+    public void testOfReturning() {
+        //Given
+        Reader reader = new Reader("Adam", "Nowak", LocalDate.of(2018, 5, 15));
+        Title title = new Title("Tytuł", "Autor", 03);
+        Specimen specimen2 = new Specimen("old", title);
+        Borrowings borrowings = new Borrowings(LocalDate.of(2019, 10, 1), null, specimen2, reader);
+
+        //When
+        long idOfReader = dbService.addReader(reader).getReaderId();
+        long idOfTitle = dbService.addTitle(title).getTitleId();
+        long idOfSpecimen = dbService.addSpecimen(specimen2).getSpecimenId();
+
+        dbService.saveBorrowing(borrowings);
+        borrowings.setReturned(LocalDate.now());
+        LocalDate returned = dbService.saveBorrowing(borrowings).getReturned();
+        LocalDate addedReturnDate = borrowings.getReturned();
+        //Then
+        Assert.assertNotEquals(0, idOfReader);
+        Assert.assertNotEquals(0, idOfSpecimen);
+        Assert.assertEquals(addedReturnDate, returned);
+
+        //CleanUp
+        dbService.deleteReaderById(idOfReader);
+        dbService.deleteTitleById(idOfTitle);
+    }
+
+
 }

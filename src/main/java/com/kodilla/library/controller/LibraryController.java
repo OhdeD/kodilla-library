@@ -1,9 +1,6 @@
 package com.kodilla.library.controller;
 
-        import com.kodilla.library.domain.ReaderDto;
-        import com.kodilla.library.domain.Specimen;
-        import com.kodilla.library.domain.SpecimenDto;
-        import com.kodilla.library.domain.TitleDto;
+        import com.kodilla.library.domain.*;
         import com.kodilla.library.mapper.Mapper;
         import com.kodilla.library.service.DbService;
         import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,7 @@ public class LibraryController {
 
     @RequestMapping(method = RequestMethod.POST ,value = "newReader", consumes = "application/json")
     public void addReader(@RequestBody ReaderDto readerDto){
-        service.addReader(mapper.mapToReader(readerDto));
+        service.addReader(mapper.mapToReaderBasic(readerDto));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "newTitle", consumes = "application/json")
@@ -39,13 +36,20 @@ public class LibraryController {
        return mapper.mapToSpecimensDto(service.addSpecimen(mapper.mapToSpecimens(specimenDto)));
     }
 
-    public List<Specimen> showAvailableSpecimens(@RequestParam String status){
+    @RequestMapping(method = RequestMethod.GET, value = "availableSpecimens")
+    public List<SpecimenDto> getAvailableSpecimens(@RequestParam Long titleId){
+        return mapper.mapToSpecimensDtoList(service.getAvailableSpecimensOfOneTitle(titleId));
+    }
 
-        return null;
+    @RequestMapping(method = RequestMethod.POST, value = "borrow", consumes = "application/json")
+    public void borrowTitle(@RequestBody BorrowingsDto borrowingsDto) {
+        service.saveBorrowing(mapper.mapToBorrowings(borrowingsDto));
 
     }
 
-
-
+    @RequestMapping(method = RequestMethod.PUT, value = "return")
+    public BorrowingsDto returnTitle(@RequestParam Long readerId, @RequestParam Long specimenId){
+       return mapper.mapToBorrowingsDto(service.returnTitle(readerId,specimenId));
+    }
 
 }
