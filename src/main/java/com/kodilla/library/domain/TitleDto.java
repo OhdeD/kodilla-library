@@ -19,4 +19,10 @@ public class TitleDto {
     private String author;
     private int published;
     private List<Specimen> specimenList;
+
+    public TitleDto(String title, String author, int published) {
+        this.title = title;
+        this.author = author;
+        this.published = published;
+    }
 }

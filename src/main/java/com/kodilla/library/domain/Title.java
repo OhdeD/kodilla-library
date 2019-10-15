@@ -38,4 +38,14 @@ public class Title {
         this.author = author;
         this.published = published;
     }
+    public Title(Long id,String title, String author, int published) {
+        this.titleId=id;
+        this.title = title;
+        this.author = author;
+        this.published = published;
+    }
+    public Title(Long titleId){
+        this.titleId = titleId;
+    }
+
 }

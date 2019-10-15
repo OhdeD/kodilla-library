@@ -48,8 +48,8 @@ public class LibraryController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "return")
-    public BorrowingsDto returnTitle(@RequestParam Long readerId, @RequestParam Long specimenId){
-       return mapper.mapToBorrowingsDto(service.returnTitle(readerId,specimenId));
+    public void returnTitle(@RequestParam Long readerId, @RequestParam Long specimenId){
+        service.returnTitle(readerId,specimenId);
     }
 
 }

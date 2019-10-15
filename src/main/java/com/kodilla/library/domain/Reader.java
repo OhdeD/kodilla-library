@@ -40,4 +40,7 @@ public class Reader {
         this.surname = surname;
         this.joinDate = joinDate;
     }
+    public Reader (Long readerId){
+        this.readerId = readerId;
+    }
 }

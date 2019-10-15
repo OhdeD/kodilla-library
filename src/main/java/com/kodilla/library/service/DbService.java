@@ -96,8 +96,8 @@ public class DbService {
         return availableSpecimens;
     }
 
-    public Borrowings returnTitle(Long readerId, Long specimenId){
-        return borrowingRepository.returnTitleBySpecimenIdAndReaderId(readerId,specimenId);
+    public void returnTitle(Long readerId, Long specimenId){
+        borrowingRepository.returnTitleBySpecimenIdAndReaderId(readerId,specimenId);
     }
 
 

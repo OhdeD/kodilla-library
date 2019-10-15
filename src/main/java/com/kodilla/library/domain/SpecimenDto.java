@@ -15,4 +15,9 @@ public class SpecimenDto {
     private String status;
     private Title title;
     private List<Borrowings>borrowings;
+
+    public SpecimenDto(String status, Title title) {
+        this.status = status;
+        this.title = title;
+    }
 }

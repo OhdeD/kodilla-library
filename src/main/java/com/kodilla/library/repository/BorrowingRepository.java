@@ -1,6 +1,7 @@
 package com.kodilla.library.repository;
 import com.kodilla.library.domain.Borrowings;
 import com.kodilla.library.domain.Specimen;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -16,7 +17,11 @@ public interface BorrowingRepository extends CrudRepository<Borrowings, Long> {
 
     List<Borrowings> findAllByReturnedNull();
 
-    @Query(nativeQuery = true)
-    Borrowings returnTitleBySpecimenIdAndReaderId(@Param("READERID") Long readerId, @Param("SPECIMENID") Long specimenId);
+    @Modifying
+    @Query(value = " UPDATE BORROWINGS" +
+            " SET returned = now() " +
+            " WHERE (returned is null and reader_id = :READERID and specimen_id = :SPECIMENID );",
+            nativeQuery = true)
+    void returnTitleBySpecimenIdAndReaderId(@Param("READERID") Long readerId, @Param("SPECIMENID") Long specimenId);
 
 }
