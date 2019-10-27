@@ -17,7 +17,7 @@ import java.time.LocalDate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class KodillaLibraryTestSuite {
+public class KodillaLibraryDbServiceTestSuite {
     @Autowired
     TitlesRepository titlesRepository;
     @Autowired
@@ -35,7 +35,6 @@ public class KodillaLibraryTestSuite {
 
         //CleanUp
         dbService.deleteReaderById(id);
-
     }
 
     @Test

@@ -30,15 +30,14 @@ public class Specimen {
     @OneToMany(targetEntity = Borrowings.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "specimen")
     private List<Borrowings> borrowings;
 
-
     public Specimen(String status, Title title) {
         this.status = status;
         this.title = title;
     }
-    public Specimen(Long specimenId){
+
+    public Specimen(Long specimenId) {
         this.specimenId = specimenId;
     }
-
 
     @Override
     public String toString() {

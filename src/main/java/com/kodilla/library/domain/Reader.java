@@ -1,6 +1,5 @@
 package com.kodilla.library.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -40,7 +38,8 @@ public class Reader {
         this.surname = surname;
         this.joinDate = joinDate;
     }
-    public Reader (Long readerId){
+
+    public Reader(Long readerId) {
         this.readerId = readerId;
     }
 }

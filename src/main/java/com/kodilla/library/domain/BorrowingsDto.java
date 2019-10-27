@@ -5,18 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.LocalDate;
-
-
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BorrowingsDto  {
+public class BorrowingsDto {
     private long lp;
     private LocalDate borrowingDate;
     private LocalDate returned;
