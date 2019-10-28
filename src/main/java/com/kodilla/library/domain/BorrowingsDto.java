@@ -15,13 +15,13 @@ public class BorrowingsDto {
     private long lp;
     private LocalDate borrowingDate;
     private LocalDate returned;
-    private Specimen specimen;
-    private Reader reader;
+    private SpecimenDto specimenDto;
+    private ReaderDto readerDto;
 
-    public BorrowingsDto(LocalDate borrowingDate, LocalDate returned, Specimen specimen, Reader reader) {
+    public BorrowingsDto(LocalDate borrowingDate, LocalDate returned, SpecimenDto specimenDto, ReaderDto readerDto) {
         this.borrowingDate = borrowingDate;
         this.returned = returned;
-        this.specimen = specimen;
-        this.reader = reader;
+        this.specimenDto = specimenDto;
+        this.readerDto = readerDto;
     }
 }

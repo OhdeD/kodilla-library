@@ -15,7 +15,7 @@ public class ReaderDto {
     private String name;
     private String surname;
     private LocalDate joinDate;
-    private List<Borrowings> borrowings;
+    private List<BorrowingsDto> borrowings;
 
     public ReaderDto(String name, String surname, LocalDate joinDate) {
         this.name = name;

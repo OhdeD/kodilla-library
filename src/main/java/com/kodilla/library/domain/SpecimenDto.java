@@ -12,11 +12,12 @@ import java.util.List;
 public class SpecimenDto {
     private Long specimenId;
     private String status;
-    private Title title;
+    private TitleDto titleDto;
     private List<Borrowings> borrowings;
 
-    public SpecimenDto(String status, Title title) {
+    public SpecimenDto(String status, TitleDto titleDto) {
         this.status = status;
-        this.title = title;
+        this.titleDto = titleDto;
     }
+
 }

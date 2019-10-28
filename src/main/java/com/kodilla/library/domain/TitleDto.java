@@ -1,12 +1,10 @@
 package com.kodilla.library.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -18,9 +16,16 @@ public class TitleDto {
     private String title;
     private String author;
     private int published;
-    private List<Specimen> specimenList;
+    private List<SpecimenDto> specimenList;
 
     public TitleDto(String title, String author, int published) {
+        this.title = title;
+        this.author = author;
+        this.published = published;
+    }
+
+    public TitleDto(Long titleId, String title, String author, int published) {
+        this.titleId = titleId;
         this.title = title;
         this.author = author;
         this.published = published;
