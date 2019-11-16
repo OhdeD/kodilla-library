@@ -10,7 +10,5 @@ import java.util.List;
 public interface SpecimenRepository extends CrudRepository<Specimen, Long> {
     @Override
     Specimen save(Specimen specimen);
-
-
     List<Specimen> findAllSpecimenIdByTitle_TitleId(Long id);
 }

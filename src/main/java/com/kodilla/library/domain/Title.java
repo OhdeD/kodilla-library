@@ -1,6 +1,7 @@
 package com.kodilla.library.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Table (name = "TITLES")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
 public class Title {
     @Id
@@ -30,22 +32,7 @@ public class Title {
     @Column(name = "year_of_publishing")
     private int published;
 
+    @Builder.Default
     @OneToMany(targetEntity = Specimen.class, mappedBy = "title", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Specimen> specimenList = new ArrayList<>();
-
-    public Title(String title, String author, int published) {
-        this.title = title;
-        this.author = author;
-        this.published = published;
-    }
-    public Title(Long id,String title, String author, int published) {
-        this.titleId=id;
-        this.title = title;
-        this.author = author;
-        this.published = published;
-    }
-    public Title(Long titleId){
-        this.titleId = titleId;
-    }
-
 }

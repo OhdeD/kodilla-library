@@ -1,6 +1,7 @@
 package com.kodilla.library.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,8 +11,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "SPECIMENS")
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 public class Specimen {
     @Column(name = "specimen_id")
@@ -29,17 +31,6 @@ public class Specimen {
 
     @OneToMany(targetEntity = Borrowings.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "specimen")
     private List<Borrowings> borrowings;
-
-    public Specimen(Long specimenId, String status, Title title) {
-        this.specimenId = specimenId;
-        this.status = status;
-        this.title = title;
-    }
-
-    public Specimen(Long specimenId) {
-        this.specimenId = specimenId;
-    }
-
 
     @Override
     public String toString() {

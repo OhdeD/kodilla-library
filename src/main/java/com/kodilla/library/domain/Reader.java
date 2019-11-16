@@ -1,6 +1,7 @@
 package com.kodilla.library.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Reader {
     @Id
     @GeneratedValue
@@ -32,14 +34,4 @@ public class Reader {
 
     @ManyToMany(targetEntity = Borrowings.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "reader")
     private List<Borrowings> borrowings;
-
-    public Reader(String name, String surname, LocalDate joinDate) {
-        this.name = name;
-        this.surname = surname;
-        this.joinDate = joinDate;
-    }
-
-    public Reader(Long readerId) {
-        this.readerId = readerId;
-    }
 }

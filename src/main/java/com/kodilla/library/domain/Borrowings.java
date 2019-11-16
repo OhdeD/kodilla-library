@@ -1,9 +1,6 @@
 package com.kodilla.library.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,6 +15,7 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Borrowings implements Serializable {
     @Id
     @GeneratedValue
@@ -38,11 +36,4 @@ public class Borrowings implements Serializable {
     @ManyToOne
     @JoinColumn(name = "reader_id")
     private Reader reader;
-
-    public Borrowings(LocalDate borrowingDate, LocalDate returned, Specimen specimen, Reader reader) {
-        this.borrowingDate = borrowingDate;
-        this.returned = returned;
-        this.specimen = specimen;
-        this.reader = reader;
-    }
 }

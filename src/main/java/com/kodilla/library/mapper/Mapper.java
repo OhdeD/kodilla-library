@@ -11,7 +11,10 @@ import java.util.stream.Collectors;
 public class Mapper {
 
     public Reader mapToReader(ReaderDto readerDto) {
-        return new Reader(readerDto.getName(), readerDto.getSurname(), readerDto.getJoinDate());
+        return Reader.builder()
+                .name(readerDto.getName())
+                .surname(readerDto.getSurname())
+                .joinDate(readerDto.getJoinDate()).build();
     }
 
     public Title mapToTitle(TitleDto titleDto) {
@@ -22,26 +25,57 @@ public class Mapper {
                 specimensList.add(specimen);
             }
         }
-        return new Title(titleDto.getTitleId(), titleDto.getTitle(), titleDto.getAuthor(), titleDto.getPublished(), specimensList);
+        return Title.builder()
+                .titleId(titleDto.getTitleId())
+                .title(titleDto.getTitle())
+                .author(titleDto.getAuthor())
+                .published(titleDto.getPublished())
+                .specimenList(specimensList).build();
     }
 
     public Specimen mapToSpecimens(SpecimenDto specimenDto) {
-        return new Specimen(specimenDto.getSpecimenId(), specimenDto.getStatus(), new Title(specimenDto.getTitleDto().getTitleId()));
+        return Specimen.builder()
+                .specimenId(specimenDto.getSpecimenId())
+                .status(specimenDto.getStatus())
+                .title(Title.builder()
+                        .titleId(specimenDto.getTitleDto().getTitleId()).build())
+                .build();
     }
 
     public SpecimenDto mapToSpecimensDto(Specimen specimen) {
-        return new SpecimenDto(specimen.getSpecimenId(), specimen.getStatus(), new TitleDto(specimen.getSpecimenId(), specimen.getTitle().getTitle(), specimen.getTitle().getAuthor(), specimen.getTitle().getPublished()), specimen.getBorrowings());
+        return SpecimenDto.builder()
+                .specimenId(specimen.getSpecimenId())
+                .status(specimen.getStatus())
+                .titleDto(TitleDto.builder()
+                        .titleId(specimen.getTitle().getTitleId())
+                        .title(specimen.getTitle().getTitle())
+                        .author(specimen.getTitle().getAuthor())
+                        .published(specimen.getTitle().getPublished()).build())
+                .borrowings(specimen.getBorrowings()).build();
     }
 
     public Borrowings mapToBorrowings(BorrowingsDto borrowingsDto) {
-        return new Borrowings(borrowingsDto.getBorrowingDate(), borrowingsDto.getReturned(), new Specimen(borrowingsDto.getSpecimenDto().getSpecimenId()), new Reader(borrowingsDto.getReaderDto().getReaderId()));
+        return Borrowings.builder()
+                .borrowingDate(borrowingsDto.getBorrowingDate())
+                .returned(borrowingsDto.getReturned())
+                .specimen(Specimen.builder()
+                        .specimenId(borrowingsDto.getSpecimenDto().getSpecimenId()).build())
+                .reader(Reader.builder()
+                        .readerId(borrowingsDto.getReaderDto().getReaderId()).build())
+                .build();
     }
 
     public List<SpecimenDto> mapToSpecimensDtoList(List<Specimen> list) {
         return list.stream()
-                .map(a -> new SpecimenDto(a.getSpecimenId(), a.getStatus(),
-                        new TitleDto(a.getTitle().getTitleId(), a.getTitle().getTitle(), a.getTitle().getAuthor(), a.getTitle().getPublished()),
-                        a.getBorrowings()))
+                .map(a -> SpecimenDto.builder()
+                        .specimenId(a.getSpecimenId())
+                        .status(a.getStatus())
+                        .titleDto(TitleDto.builder()
+                                .titleId(a.getTitle().getTitleId())
+                                .title(a.getTitle().getTitle())
+                                .author(a.getTitle().getAuthor())
+                                .published(a.getTitle().getPublished()).build())
+                        .borrowings(a.getBorrowings()).build())
                 .collect(Collectors.toList());
     }
 }
