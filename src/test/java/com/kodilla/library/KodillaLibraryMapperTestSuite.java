@@ -14,7 +14,7 @@ public class KodillaLibraryMapperTestSuite {
     @Test
     public void testMapToReader() {
         //Given
-        ReaderDto readerDto = new ReaderDto("name", "surname", LocalDate.of(2019, 10, 5));
+        ReaderDto readerDto = ReaderDto.builder().name("name").surname("surmane").joinDate(LocalDate.of(2019, 10, 5)).build();
 
         //When
         Reader reader = mapper.mapToReader(readerDto);
@@ -32,11 +32,11 @@ public class KodillaLibraryMapperTestSuite {
     @Test
     public void testMapToTitle() {
         //Given
-        TitleDto titleDto = new TitleDto("Tytuł", "Autor", 2015);
+        TitleDto titleDto = TitleDto.builder().title("tytuł").author("autor").published(2015).build();
 
         System.out.println(" tytuł: " + titleDto.getTitle());
         //When
-        Title title = mapper.mapToTitle(new TitleDto("Tytuł", "Autor", 2015));
+        Title title = mapper.mapToTitle(titleDto);
         String t = title.getTitle();
         String a = title.getAuthor();
         int p = title.getPublished();
@@ -51,14 +51,14 @@ public class KodillaLibraryMapperTestSuite {
     @Test
     public void testMapToSpecimenDto() {
         //Given
-        Title title = new Title("title", "author", 2015);
-        Specimen specimen = new Specimen("new", title);
+        Title title = Title.builder().title("tytuł").author("autor").published(2015).build();
+        Specimen specimen = Specimen.builder().status("NEW").title(title).build();
 
         //When
         SpecimenDto specimenDto = mapper.mapToSpecimensDto(specimen);
         String status = specimenDto.getStatus();
-        String tytuł = specimenDto.getTitle().getTitle();
-        String author = specimenDto.getTitle().getAuthor();
+        String tytuł = specimenDto.getTitleDto().getTitle();
+        String author = specimenDto.getTitleDto().getAuthor();
 
         //Then
         Assert.assertEquals(author, "author");
@@ -69,8 +69,9 @@ public class KodillaLibraryMapperTestSuite {
     @Test
     public void testMapToSpecimen() {
         //Given
-        Title title = new Title(7L, "T", "A", 2011);
-        SpecimenDto specimenDto = new SpecimenDto(1L, "new", title, new ArrayList<>());
+        TitleDto title = TitleDto.builder().titleId(7L).title("T").author("A").published(2011).build();
+
+        SpecimenDto specimenDto = SpecimenDto.builder().specimenId(1L).status("new").titleDto(title).borrowings(new ArrayList<>()).build();
 
         //When
         Specimen specimen = mapper.mapToSpecimens(specimenDto);
@@ -88,9 +89,9 @@ public class KodillaLibraryMapperTestSuite {
     @Test
     public void testMapToBorrowings() {
         //Given
-        Specimen specimen = new Specimen(4L);
-        Reader reader = new Reader(5L, "Ania", "Nowak", LocalDate.of(2010, 05, 02), new ArrayList<>());
-        BorrowingsDto borrowingsDto = new BorrowingsDto(LocalDate.of(2019, 10, 25), LocalDate.of(2019, 10, 30), specimen, reader);
+        SpecimenDto specimen = SpecimenDto.builder().specimenId(4L).build();
+        ReaderDto reader = ReaderDto.builder().readerId(5L).name("anna").surname("nowak").joinDate(LocalDate.of(2010, 05, 02)).borrowings(new ArrayList<>()).build();
+        BorrowingsDto borrowingsDto = BorrowingsDto.builder().borrowingDate(LocalDate.of(2019, 10, 25)).returned( LocalDate.of(2019, 10, 30)).specimenDto(specimen).readerDto(reader).build();
 
         //When
         Borrowings borrowings = mapper.mapToBorrowings(borrowingsDto);
@@ -110,10 +111,10 @@ public class KodillaLibraryMapperTestSuite {
     @Test
     public void testMapToSpecimensDtoList() {
         //Given
-        Title title = new Title("title", "author", 2015);
-        Specimen specimen = new Specimen("new", title);
-        Title title2 = new Title("title2", "author2", 2025);
-        Specimen specimen2 = new Specimen("new", title2);
+        Title title = Title.builder().title("Tytuł").author("Author").published(03).build();
+        Specimen specimen = Specimen.builder().status("NEW").title(title).build();
+        Title title2 = Title.builder().title("Tytuł2").author("Author2").published(03).build();
+        Specimen specimen2 = Specimen.builder().status("NEW2").title(title).build();
 
         List<Specimen> list = new ArrayList<>();
         list.add(specimen);
@@ -121,8 +122,8 @@ public class KodillaLibraryMapperTestSuite {
         //When
         List<SpecimenDto> specimenDtos = mapper.mapToSpecimensDtoList(list);
 
-        String t1 = specimenDtos.get(0).getTitle().getTitle();
-        String t2 = specimenDtos.get(1).getTitle().getTitle();
+        String t1 = specimenDtos.get(0).getTitleDto().getTitle();
+        String t2 = specimenDtos.get(1).getTitleDto().getTitle();
         String status1 = specimenDtos.get(0).getStatus();
         String status2 = specimenDtos.get(1).getStatus();
         //Then

@@ -26,7 +26,7 @@ public class KodillaLibraryDbServiceTestSuite {
     @Test
     public void testAddNewReader() {
         //Given
-        Reader reader = new Reader("Name", "Surname", LocalDate.of(2018, 10, 6));
+        Reader reader = Reader.builder().name("name").surname("surname").joinDate(LocalDate.of(2018, 10, 6)).build();
 
         //When
         long id = dbService.addReader(reader).getReaderId();
@@ -40,7 +40,7 @@ public class KodillaLibraryDbServiceTestSuite {
     @Test
     public void testAddingTitle() {
         //Given
-        Title title1 = new Title("tytul1", "autor1", 2005);
+        Title title1 = Title.builder().title("Tytuł").author("Author").published(03).build();
 
         //When
         long id = dbService.addTitle(title1).getTitleId();
@@ -55,11 +55,11 @@ public class KodillaLibraryDbServiceTestSuite {
     @Test
     public void testAddingSpecimen() {
         //Given
-        Title title2 = new Title("tytul1", "autor1", 2005);
-        Specimen specimen2 = new Specimen("new", title2);
+        Title title = Title.builder().title("Tytuł").author("Author").published(03).build();
+        Specimen specimen2 = Specimen.builder().status("NEW").title(title).build();
 
         //When
-        long id = dbService.addTitle(title2).getTitleId();
+        long id = dbService.addTitle(title).getTitleId();
         long idSpecimen = dbService.addSpecimen(specimen2).getSpecimenId();
 
         //Then
@@ -76,11 +76,11 @@ public class KodillaLibraryDbServiceTestSuite {
     @Test
     public void testOfGettingCopies() {
         //Given
-        Reader reader = new Reader("Adam", "Nowak", LocalDate.of(2018, 5, 15));
-        Title title = new Title("Tytuł", "Autor", 03);
-        Specimen specimen = new Specimen("new", title);
-        Specimen specimen2 = new Specimen("old", title);
-        Borrowings borrowings = new Borrowings(LocalDate.of(2019, 10, 1), null, specimen2, reader);
+        Reader reader = Reader.builder().name("Adam").surname("Nowak").joinDate(LocalDate.of(2018, 5, 15)).build();
+        Title title = Title.builder().title("Tytuł").author("Author").published(03).build();
+        Specimen specimen = Specimen.builder().status("NEW").title(title).build();
+        Specimen specimen2 = Specimen.builder().status("old").title(title).build();
+        Borrowings borrowings = Borrowings.builder().borrowingDate(LocalDate.of(2019, 10, 1)).specimen(specimen).reader(reader).build();
 
         //When
         long idOfReader = dbService.addReader(reader).getReaderId();
@@ -105,10 +105,10 @@ public class KodillaLibraryDbServiceTestSuite {
     @Test
     public void testOfBorrowingTitle() {
         //Given
-        Reader reader = new Reader("Adam", "Nowak", LocalDate.of(2018, 5, 15));
-        Title title = new Title("Tytuł", "Autor", 03);
-        Specimen specimen2 = new Specimen("old", title);
-        Borrowings borrowings = new Borrowings(LocalDate.of(2019, 10, 1), null, specimen2, reader);
+        Reader reader = Reader.builder().name("Adam").surname("Nowak").joinDate(LocalDate.of(2018, 5, 15)).build();
+        Title title = Title.builder().title("Tytuł").author("Author").published(03).build();
+        Specimen specimen2 = Specimen.builder().status("NEW").title(title).build();
+        Borrowings borrowings = Borrowings.builder().borrowingDate(LocalDate.of(2019, 10, 1)).specimen(specimen2).reader(reader).build();
 
         //When
         dbService.addReader(reader);
@@ -125,10 +125,10 @@ public class KodillaLibraryDbServiceTestSuite {
     @Test
     public void testOfReturning() {
         //Given
-        Reader reader = new Reader("Adam", "Nowak", LocalDate.of(2018, 5, 15));
-        Title title = new Title("Tytuł", "Autor", 03);
-        Specimen specimen2 = new Specimen("old", title);
-        Borrowings borrowings = new Borrowings(LocalDate.of(2019, 10, 1), null, specimen2, reader);
+        Reader reader = Reader.builder().name("Adam").surname("Nowak").joinDate(LocalDate.of(2018, 5, 15)).build();
+        Title title = Title.builder().title("Tytuł").author("Author").published(03).build();
+        Specimen specimen2 = Specimen.builder().status("NEW").title(title).build();
+        Borrowings borrowings = Borrowings.builder().borrowingDate(LocalDate.of(2019, 10, 1)).specimen(specimen2).reader(reader).build();
 
         //When
         long idOfReader = dbService.addReader(reader).getReaderId();
